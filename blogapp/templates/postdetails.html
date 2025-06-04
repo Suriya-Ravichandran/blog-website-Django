@@ -51,40 +51,18 @@
         </div>
     </nav>
 
+    <div class="container">
+        <div class="col-md-8">
+        <h3 class="pb-4 mb-4 fst-italic border-bottom">{{posts.title}}</h3>
 
-    <div class="album py-5 bg-body-tertiary">
-        <div class="container">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
-                <!-- Card Start -->
-                 {% if posts%}
-                    {% for post in posts%}
-                    <div class="col">
-                        <div class="card shadow-sm">
-                            <img src="https://picsum.photos/200" alt="" class="bd-placeholder-img card-img-top">
-                            <div class="card-body">
-                                <a href="{% url 'blogapp:postdetails' post.id %}"><h3>{{post.title}}</h3></a>
-                                <p class="card-text">
-                                    {{post.Content}}
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                                    </div>
-                                    <small class="text-body-secondary">9 mins</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                {% else %}
-                    <p>No posts Here</p>
-                {% endif %}
-            </div>
+        <!-- Blog Post 1 -->
+        <article class="blog-post">
+            <p class="blog-post-meta">{{posts.create_at}} Catagory {{category.name}}</p>
+            <p>{{posts.content}}</p>
+            <hr>
+        </article>
         </div>
     </div>
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
   </body>

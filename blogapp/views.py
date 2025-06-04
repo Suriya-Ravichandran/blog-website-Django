@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Post,Catagory
 # Create your views here.
 
 
@@ -15,12 +16,10 @@ def index(request):
     return render(request,"index.html")
 
 def python(request):
-
-    posts=[
-        {"id":1,"title":"Python introduction","Content":"Demo content 1"},
-        {"id":2,"title":"Python Variables","Content":"Demo content 2"},
-        {"id":3,"title":"Python Operators","Content":"Demo content 3"},
-    ]
-
-
+    posts=Post.objects.all()
     return render(request,"posts.html",{"posts": posts})
+
+def postdetails(request,id):
+   posts=Post.objects.get(pk=id)
+   category= posts.category
+   return render(request,"postdetails.html",{"posts": posts,"category":category})
