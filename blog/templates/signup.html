@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content%}
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-center mt-5">
+            <div class="col-4">
+                <h3>Register</h3>
+                <!-- success message -->
+                {% if messages %}
+                    {% for success_message in messages%}
+                    <div class="alert alert-success" role="alert">
+                        {{success_message}}
+                    </div>
+                    {%endfor%}
+                {% endif %}
+
+                <!-- error message -->
+                 {% for field in form %}
+                    {% if field.errors %}
+                        <div class="alert alert-danger" role="alert">
+                           {{field.label_tag}}
+                           {% for error_msg in field.errors %}
+                                {{ error_msg }}
+                           {% endfor %}
+                        </div>
+                    {% endif %}
+                  {% endfor %}
+
+                <!-- non field error -->
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}  
+                    </div>
+                 {% endfor %}
+                <div class="my-3">
+                    <form method="post">
+                         {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" value="{{form.Username.value|default:''}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{form.Email.value|default:''}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmpassword" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirmpassword" name="confirmpassword">
+                        </div>
+                        <div class="my-3 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock%}
+    

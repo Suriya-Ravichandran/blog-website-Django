@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse,Http404
-from . models import Post,Aboutus
+from . models import Post,Aboutus,User
 from django.core.paginator import Paginator
-from .forms import ContactForm
+from .forms import ContactForm,SignupForm
 from django.contrib import messages
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
@@ -50,9 +50,23 @@ def contact(request):
 
             })
             messages.success(request,"Form submit successfully")
-            send_mail(subject,message,'noreplay@blog.com',[sendemail])
+            send_mail(subject,message,'noreplay@gmail.com',[sendemail])
             return render(request,"contact.html",{"form":form})
         else:
-            return render(request,"contact.html",{"form":form,"name":name,"email":email,"message":message})
+            return render(request,"contact.html",{"form":form,"name":name,"email":email,"message":message_form})
     return render(request,"contact.html")
 
+def signup(request):
+    form=SignupForm()
+    if request.method=="POST":
+        form=SignupForm(request.POST)
+        if form.is_valid():
+            user=form.save(commit=False)
+            user.set_password(form.cleaned_data["password"])
+            user.save()
+            messages.success(request,"Signup Successfull You can Login")
+            return redirect("blog:dashboard")
+    return render(request,"signup.html",{"form":form})
+
+def dashboard(request):
+    return render(request,"dashboard.html")
