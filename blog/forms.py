@@ -25,3 +25,16 @@ class SignupForm(forms.ModelForm):
         if password and password_confirm and password != password_confirm:
             raise forms.ValidationError("Password Not Match")
         
+class SigninForm(forms.Form):
+        username=forms.CharField(label="Username",max_length=100,required=True)
+        password=forms.CharField(label="Password",max_length=100,required=True)
+
+        def clean(self):
+            cleaned_data=super().clean()
+            username=cleaned_data.get("username")
+            password=cleaned_data.get("password")
+
+            if username and password:
+                 user=authenticate(username=username,password=password)
+                 if user is None:
+                      raise forms.ValidationError("Invaild User and Password")

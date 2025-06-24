@@ -2,10 +2,11 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse,Http404
 from . models import Post,Aboutus,User
 from django.core.paginator import Paginator
-from .forms import ContactForm,SignupForm
+from .forms import ContactForm,SignupForm,SigninForm
 from django.contrib import messages
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
+from django.contrib.auth import authenticate,login
 # Create your views here.
 def index(request):
     blog_title="Latest Post"
@@ -67,6 +68,20 @@ def signup(request):
             messages.success(request,"Signup Successfull You can Login")
             return redirect("blog:dashboard")
     return render(request,"signup.html",{"form":form})
+
+def signin(request):
+   form=SigninForm()
+   if request.method=='POST':
+       form=SigninForm()
+       if form.is_valid():
+           username=form.cleaned_data["username"]
+           password=form.cleaned_data["password"]
+           user=authenticate(username=username,password=password)
+           if user is not None:
+               login(user)
+               return redirect("blog:dashboard")
+   return render(request,"signin.html",{"form":form})
+
 
 def dashboard(request):
     return render(request,"dashboard.html")
