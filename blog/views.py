@@ -6,7 +6,7 @@ from .forms import ContactForm,SignupForm,SigninForm
 from django.contrib import messages
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 # Create your views here.
 def index(request):
     blog_title="Latest Post"
@@ -66,7 +66,7 @@ def signup(request):
             user.set_password(form.cleaned_data["password"])
             user.save()
             messages.success(request,"Signup Successfull You can Login")
-            return redirect("blog:dashboard")
+            return redirect("blog:index")
     return render(request,"signup.html",{"form":form})
 
 def signin(request):
@@ -78,7 +78,7 @@ def signin(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request,user)
-                return redirect('blog:dashboard')
+                return redirect('blog:index')
     else:
         form = SigninForm()
     
@@ -86,3 +86,7 @@ def signin(request):
 
 def dashboard(request):
     return render(request,"dashboard.html")
+
+def userlogout(request):
+    logout(request)
+    return redirect('blog:signin')
